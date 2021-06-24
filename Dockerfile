@@ -8,6 +8,7 @@ RUN yarn build
 
 FROM nginx
 WORKDIR /usr/share/nginx/html
+RUN mkdir admin
 
 # Remove default nginx static assets
 RUN rm -rf ./*
@@ -16,7 +17,5 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY conf/default.conf /etc/nginx/conf.d/default.conf
 
 # Copy static assets from builder stage
-COPY --from=builder /app/build .
-
+COPY --from=builder /app/build ./admin
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
